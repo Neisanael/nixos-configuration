@@ -132,8 +132,6 @@
     bun
     nodejs
     fastfetch
-    flutter
-    dart
     rustup
     clang
     llvmPackages.bintools
@@ -141,7 +139,6 @@
     jdk8
     jdk17
     jdk22
-    kitty
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -160,7 +157,7 @@
 
   services.flatpak.enable = true;
   xdg.portal.enable = true;
-  #xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  # xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
   services.gns3-server = {
     package = pkgs.gns3-server;
@@ -169,7 +166,6 @@
     vpcs.enable = true;
     dynamips.package = pkgs.dynamips;
     dynamips.enable = true;
-    log.debug = true;
   };
 
   security.wrappers.ubridge = {
@@ -193,7 +189,7 @@
     fira-code-symbols
   ];
 
-  programs.hyprland.enable = true;
+  # programs.hyprland.enable = true;
 
   programs.adb.enable = true;
 
@@ -207,6 +203,7 @@
     ohMyZsh.enable = true;
     ohMyZsh.theme = "fino-time";
   };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
