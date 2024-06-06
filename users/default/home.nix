@@ -7,7 +7,6 @@
   home.stateVersion = "23.11";
 
   home.packages = with pkgs; [
-    heroic
     wireshark
     firefox
     vscode-fhs
@@ -32,11 +31,10 @@
     handbrake
     arduino
     github-desktop
-    putty
     staruml
-    codeblocksFull
     unityhub
-    gns3-gui 
+    gns3-gui
+    ferdium 
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

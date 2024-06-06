@@ -8,25 +8,28 @@
     ];
 
   # Bootloader.
-  #boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.loader.grub.enable = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.configurationLimit = 5;
-  boot.loader.timeout = 10;
+  # boot.loader.efi.efiSysMountPoint = "/mnt/esp";  # Mount point dari ESP
+  
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # boot.loader.grub.enable = true;
+  # boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.configurationLimit = 5;
+  # boot.loader.timeout = 10;
   # boot.loader.grub.splashMode = "stretch";
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.useOSProber = true;
+  # boot.loader.grub.device = "nodev";
+  # boot.loader.grub.useOSProber = true;
   # boot.loader.grub.splashImage = ./boot-wallpaper2.png;
 
   boot.supportedFilesystems = [ "ntfs" ];
-  boot = {
-    consoleLogLevel = 0;
-    initrd.verbose = false;
-    plymouth.enable = true;
-    kernelParams = [ "quiet" "splash" "rd.systemd.show_status=false" "rd.udev.log_level=3" "udev.log_priority=3" "boot.shell_on_fail" ];
-  };
+  # boot = {
+  #  consoleLogLevel = 0;
+  #  initrd.verbose = false;
+  #  plymouth.enable = true;
+  #  kernelParams = [ "quiet" "splash" "rd.systemd.show_status=false" "rd.udev.log_level=3" "udev.log_priority=3" "boot.shell_on_fail" ];
+  #};
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -60,8 +63,8 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
   
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -102,7 +105,7 @@
   users.users.shiyaken = {
     isNormalUser = true;
     description = "Shiyaken";
-    extraGroups = [ "networkmanager" "wheel" "docker" "ubridge" "dynamips" "dialout" "adbusers"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "dialout" "adbusers"];
     shell = pkgs.zsh;
   };
 
@@ -135,10 +138,17 @@
     rustup
     clang
     llvmPackages.bintools
-    ubridge
+    gns3-server
     jdk8
     jdk17
     jdk22
+    ntfs3g
+    dynamips
+    qemu
+    vpcs
+    kitty
+    inetutils
+    neovim-unwrapped
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -160,12 +170,8 @@
   # xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
   services.gns3-server = {
-    package = pkgs.gns3-server;
-    enable = true;
-    vpcs.package = pkgs.vpcs;
-    vpcs.enable = true;
-    dynamips.package = pkgs.dynamips;
-    dynamips.enable = true;
+    ubridge.package = pkgs.ubridge;
+    ubridge.enable = true;
   };
 
   security.wrappers.ubridge = {
