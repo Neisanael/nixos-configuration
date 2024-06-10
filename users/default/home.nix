@@ -21,7 +21,7 @@
     fritzing
     netbeans
     android-studio
-    discord
+    (discord.override {withTTS = true;})
     telegram-desktop
     zotero
     obs-studio
@@ -34,7 +34,8 @@
     staruml
     unityhub
     gns3-gui
-    ferdium 
+    ferdium
+    floorp 
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

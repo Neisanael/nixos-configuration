@@ -105,7 +105,7 @@
   users.users.shiyaken = {
     isNormalUser = true;
     description = "Shiyaken";
-    extraGroups = [ "networkmanager" "wheel" "docker" "dialout" "adbusers"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "dialout" "adbusers" "mysql" "vboxusers"];
     shell = pkgs.zsh;
   };
 
@@ -122,6 +122,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    mokutil
+    openssl_legacy
+    nmap
     vim
     wget
     htop
@@ -149,21 +152,61 @@
     kitty
     inetutils
     neovim-unwrapped
+    #dive
+    #podman-tui
+    #podman-compose
+    #docker-compose
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  virtualisation.docker.enable = true;
-
-  services.mysql = {
+  virtualisation.docker.rootless = {
     enable = true;
-    package = pkgs.mariadb;
+    setSocketVariable = true;
   };
 
-  services.httpd = {
-    enable = true;
-    package = pkgs.apacheHttpd;
-  };
+  virtualisation.containers.enable = true;
+
+  #virtualisation = {
+  #  podman = {
+  #    enable = true;
+
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+  #    dockerCompat = true;
+
+      # Required for containers under podman-compose to be able to talk to each other.
+  #    defaultNetwork.settings.dns_enabled = true;
+  #  };
+  #};
+
+
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+
+  #services.mysql = {
+  #  enable = true;
+  #  package = pkgs.mariadb;
+  #};
+
+  #services.httpd = {
+  #  enable = true;
+  #  enablePHP = true;
+  #  adminAddr = "webmaster@example.org";
+  #  virtualHosts."testing.org" = {
+  #    documentRoot = "/var/www/testing.org/exampleappsforkreait/public";
+  #  };
+  #};
+
+  #systemd.tmpfiles.rules = [
+  #  "d /var/www/testing.org/exampleappsforkreait/public"
+  #  "f /var/www/testing.org/exampleappsforkreait/public"
+  #];
+
+  #services.postgresql = {
+  #  enable = true;
+  #  package = pkgs.postgresql;
+  #};
+
 
   services.flatpak.enable = true;
   xdg.portal.enable = true;
@@ -210,6 +253,14 @@
     ohMyZsh.theme = "fino-time";
   };
 
+  programs.winbox = {
+    enable = true;
+    package = pkgs.winbox;
+  };
+
+  #virtualisation.vmware.host.enable = true;
+  #virtualisation.vmware.host.package = pkgs.vmware-workstation;
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -224,7 +275,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
