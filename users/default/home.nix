@@ -8,10 +8,9 @@
 
   home.packages = with pkgs; [
     wireshark
-    firefox
     vscode-fhs
     vlc
-    blender
+    blender-hip
     scrcpy
     gimp
     inkscape
@@ -21,21 +20,31 @@
     fritzing
     netbeans
     android-studio
-    (discord.override {withTTS = true;})
+    vesktop
     telegram-desktop
     zotero
     obs-studio
     audacity
     audacious
-    wpsoffice
     handbrake
-    arduino
     github-desktop
     staruml
     unityhub
     gns3-gui
     ferdium
-    floorp 
+    floorp
+    uget
+    deluge
+    osu-lazer
+    figma-linux
+    figma-agent
+    postman
+    zoom-us 
+    brave
+    kdePackages.kdenlive
+    anydesk
+    sticky
+    anydesk
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

@@ -62,10 +62,15 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
+  services.xmr-stak.openclSupport = true;
+
   # Enable the GNOME Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
-  
+  # services.xserver.displayManager.lightdm.greeters.slick.enable = true;
+  # services.xserver.displayManager.lightdm.enable = true;
+  # services.xserver.desktopManager.cinnamon.enable = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -80,6 +85,16 @@
       gutenprintBin
     ];
   };
+
+  #hardware.opengl = {
+  ## radv: an open-source Vulkan driver from freedesktop
+  #  driSupport = true;
+  #  driSupport32Bit = true;
+
+  ## amdvlk: an open-source Vulkan driver from AMD
+  #  extraPackages = [ pkgs.amdvlk ];
+  #  extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
+  #};
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -105,7 +120,7 @@
   users.users.shiyaken = {
     isNormalUser = true;
     description = "Shiyaken";
-    extraGroups = [ "networkmanager" "wheel" "docker" "dialout" "adbusers" "mysql" "vboxusers"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "dialout" "adbusers" "adb"  "mysql" "vboxusers"];
     shell = pkgs.zsh;
   };
 
@@ -122,6 +137,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    distrobox
+    unrar
     mokutil
     openssl_legacy
     nmap
@@ -134,7 +151,6 @@
     go
     php83
     php83Packages.composer
-    python313
     bun
     nodejs
     fastfetch
@@ -152,10 +168,17 @@
     kitty
     inetutils
     neovim-unwrapped
-    #dive
-    #podman-tui
-    #podman-compose
-    #docker-compose
+    dive
+    podman-tui
+    podman-compose
+    docker-compose
+    conda
+    scrcpy
+  ];
+
+  services.udev.packages = [ 
+    pkgs.platformio-core
+    pkgs.openocd
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -165,24 +188,22 @@
     setSocketVariable = true;
   };
 
-  virtualisation.containers.enable = true;
-
-  #virtualisation = {
-  #  podman = {
-  #    enable = true;
+  virtualisation = {
+    containers.enable = true;
+    podman = {
+      enable = true;
 
       # Create a `docker` alias for podman, to use it as a drop-in replacement
-  #    dockerCompat = true;
+      dockerCompat = true;
 
       # Required for containers under podman-compose to be able to talk to each other.
-  #    defaultNetwork.settings.dns_enabled = true;
-  #  };
-  #};
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
 
 
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
-
   #services.mysql = {
   #  enable = true;
   #  package = pkgs.mariadb;
@@ -233,6 +254,11 @@
     };
   };
 
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox;
+  };
+
   fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
@@ -275,7 +301,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  # networking.firewall.allowedTCPPorts = [ 80 443 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
